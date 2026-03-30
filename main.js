@@ -14,7 +14,7 @@ let playerB = {
   x: 0,
   y: 0,
   width: 50,
-  height: 50,
+  height: 50
 };
 
 const canvas = document.getElementById("turtle");
@@ -45,10 +45,14 @@ function drawMap(gameMap, fireRow, fireColumn) {
   for (let y = 0; y < rows; y++) {
     
     for (let x = 0; x < cols; x++) {
-      if((x === fireColumn)){
+      if((x === fireColumn || y === fireRow)){
         ctx.fillStyle = "#ff9500";
-      } else if(y === fireRow){
-        ctx.fillStyle = "#ff9500";
+      if(x === playerA.x && y === playerA.y){
+        alert("playerA is dead");
+      }
+      if(x === playerB.x && y === playerB.y){
+        alert("playerB is dead");
+      }
       } else {
         ctx.fillStyle = colors[gameMap[index]];
       }
@@ -57,7 +61,6 @@ function drawMap(gameMap, fireRow, fireColumn) {
     }
   }
 }
-
 
 
 function playerCollision(newx, newy, other) {
@@ -75,16 +78,16 @@ window.addEventListener("keydown", function(event) {
   let newY = playerA.y;
 
   if (event.key === "ArrowUp"){ 
-    newY--
+    newY--;
   }
   if (event.key === "ArrowDown") {
-    newY++
+    newY++;
   }
   if (event.key === "ArrowLeft") {
-    newX--
+    newX--;
   }
   if (event.key === "ArrowRight") {
-    newX++
+    newX++;
   }
 
   if (
@@ -101,16 +104,16 @@ window.addEventListener("keydown", function(event) {
   newY = playerB.y;
 
   if (event.key === "w") { 
-    newY--
+    newY--;
   }
   if (event.key === "s") { 
-    newY++
+    newY++;
   }
   if (event.key === "a") {
-    newX--
+    newX--;
   }
   if (event.key === "d") {
-    newX++
+    newX++;
   }
 
   if (
@@ -123,12 +126,21 @@ window.addEventListener("keydown", function(event) {
   }
 });
 
+let fireIndex = 0
 
+const delay = 300;
 function gameLoop() {
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  drawMap(fire_shooty_map, 3, 3);
-
+  if(fireIndex > delay){
+    if(fireIndex > delay + 10){
+      fireIndex = 0;
+    }
+    drawMap(fire_shooty_map, 6, 7);
+  } else {
+    drawMap(fire_shooty_map);
+  }
+    fireIndex ++;
   ctx.fillStyle = "red";
   ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
 
