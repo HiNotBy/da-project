@@ -1,5 +1,7 @@
 let maxx = 19;
 let maxy = 9;
+let tileSize = 50;
+
 let playerA = {
   x: 19,
   y: 9,
@@ -17,87 +19,122 @@ let playerB = {
 const canvas = document.getElementById("turtle");
 const ctx = canvas.getContext("2d");
 
+
+let fire_shooty_map = [
+  20, 
+  10, 
+  50, 
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1
+];
+
+function drawMap(gameMap) {
+  let cols = gameMap[0];
+  let rows = gameMap[1];
+  let size = gameMap[2];
+
+  let index = 3;
+
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      let tile = gameMap[index];
+      if (tile === 1) {
+        ctx.fillStyle = "#813c3c78";
+      } else {
+        ctx.fillStyle = "#aa6666";
+      }
+      ctx.fillRect(x * size, y * size, size, size);
+      index++;
+    }
+  }
+}
+
+
+
+function playerCollision(newx, newy, other) {
+  if(newx === other.x && newy === other.y){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
 window.addEventListener("keydown", function(event) {
-  if (event.key === "ArrowUp") {
-    if (playerA.y > 0);{
-      playerA.y -= 1;
-    }
-  }
 
+  let newX = playerA.x;
+  let newY = playerA.y;
+
+  if (event.key === "ArrowUp"){ 
+    newY--;
+  }
   if (event.key === "ArrowDown") {
-    if (playerA.y < maxy);{
-      playerA.y += 1;
-    }
+    newY++;
   }
-
   if (event.key === "ArrowLeft") {
-    if (playerA.x > 0);{
-      playerA.x -= 1;
-    }
+    newX--;
   }
-
   if (event.key === "ArrowRight") {
-    if (playerA.x < maxx){
-      playerA.x += 1;
-    }
+    newX++;
   }
 
-  if (event.key === "w") {
-    if (playerB.y > 0);{
-      playerB.y -= 1;
-    }
+  if (
+    newX >= 0 && newX <= maxx &&
+    newY >= 0 && newY <= maxy &&
+    !playerCollision(newX, newY, playerB)
+  ) {
+    playerA.x = newX;
+    playerA.y = newY;
   }
 
-  if (event.key === "s") {
-    if (playerB.y < maxy);{
-      playerB.y += 1;
-    }
-  }
 
+  newX = playerB.x;
+  newY = playerB.y;
+
+  if (event.key === "w") { 
+    newY--;
+  }
+  if (event.key === "s") { 
+    newY++;
+  }
   if (event.key === "a") {
-    if (playerB.x > 0);{
-      playerB.x -= 1;
-    }
+    newX--;
+  }
+  if (event.key === "d") {
+    newX++;
   }
 
-  if (event.key === "d") {
-    if (playerB.x < maxx){
-      playerB.x += 1;
-    }
+  if (
+    newX >= 0 && newX <= maxx &&
+    newY >= 0 && newY <= maxy &&
+    !playerCollision(newX, newY, playerA)
+  ) {
+    playerB.x = newX;
+    playerB.y = newY;
   }
 });
+
 
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#aa6666";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  drawMap(fire_shooty_map);
 
-  ctx.fillStyle = "#813c3c78";
-
-  for (let i = 0; i < canvas.height; i++) {
-    for (let n = 0; n < canvas.width; n++) {
-      ctx.fillRect(n * 100, i * 100, 50, 50);
-      ctx.fillRect(n * 100 + 50, i * 100 + 50, 50, 50);
-    }
-  }
-  
   ctx.fillStyle = "red";
-  ctx.fillRect(playerA.x*50, playerA.y*50, playerA.width, playerA.height);
+  ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
+
   ctx.fillStyle = "blue";
-  ctx.fillRect(playerB.x*50, playerB.y*50, playerB.width, playerB.height);
+  ctx.fillRect(playerB.x * 50, playerB.y * 50, playerB.width, playerB.height);
 
   requestAnimationFrame(gameLoop);
 }
 
 gameLoop();
-
-
-function collision(object1, object2) {
-  return (
-    object1.x < object2.x + object2.width &&
-    object1.x + object1.width > object2.x &&
-    object1.y < object2.y + object2.height &&
-    object1.y + object1.height > object2.y
-  );
-}
