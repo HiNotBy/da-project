@@ -1,6 +1,7 @@
 let maxx = 19;
 let maxy = 9;
 let tileSize = 50;
+let colors = ["#aa6666", "#813c3c78"];
 
 let playerA = {
   x: 19,
@@ -45,12 +46,7 @@ function drawMap(gameMap) {
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      let tile = gameMap[index];
-      if (tile === 1) {
-        ctx.fillStyle = "#813c3c78";
-      } else {
-        ctx.fillStyle = "#aa6666";
-      }
+        ctx.fillStyle = colors[gameMap[index]];
       ctx.fillRect(x * size, y * size, size, size);
       index++;
     }
