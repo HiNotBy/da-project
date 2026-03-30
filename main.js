@@ -1,7 +1,7 @@
-let maxx = 19;
+let maxx = 23;
 let maxy = 9;
 let tileSize = 50;
-let colors = ["#aa6666", "#813c3c78"];
+let colors = ["#813c3c78", "#aa6666"];
 
 let playerA = {
   x: 19,
@@ -22,31 +22,36 @@ const ctx = canvas.getContext("2d");
 
 
 let fire_shooty_map = [
-  20, 
-  10, 
-  50, 
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
+  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1
 ];
 
-function drawMap(gameMap) {
-  let cols = gameMap[0];
-  let rows = gameMap[1];
-  let size = gameMap[2];
 
-  let index = 3;
+function drawMap(gameMap, fireRow, fireColumn) {
+  let cols = 24;
+  let rows = 10;
+  let size = 50;
+
+  let index = 0;
 
   for (let y = 0; y < rows; y++) {
+    
     for (let x = 0; x < cols; x++) {
+      if((x === fireColumn)){
+        ctx.fillStyle = "#ff9500";
+      } else if(y === fireRow){
+        ctx.fillStyle = "#ff9500";
+      } else {
         ctx.fillStyle = colors[gameMap[index]];
+      }
       ctx.fillRect(x * size, y * size, size, size);
       index++;
     }
@@ -70,16 +75,16 @@ window.addEventListener("keydown", function(event) {
   let newY = playerA.y;
 
   if (event.key === "ArrowUp"){ 
-    newY--;
+    newY--
   }
   if (event.key === "ArrowDown") {
-    newY++;
+    newY++
   }
   if (event.key === "ArrowLeft") {
-    newX--;
+    newX--
   }
   if (event.key === "ArrowRight") {
-    newX++;
+    newX++
   }
 
   if (
@@ -96,16 +101,16 @@ window.addEventListener("keydown", function(event) {
   newY = playerB.y;
 
   if (event.key === "w") { 
-    newY--;
+    newY--
   }
   if (event.key === "s") { 
-    newY++;
+    newY++
   }
   if (event.key === "a") {
-    newX--;
+    newX--
   }
   if (event.key === "d") {
-    newX++;
+    newX++
   }
 
   if (
@@ -122,7 +127,7 @@ window.addEventListener("keydown", function(event) {
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  drawMap(fire_shooty_map);
+  drawMap(fire_shooty_map, 3, 3);
 
   ctx.fillStyle = "red";
   ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
