@@ -1,10 +1,10 @@
 let maxx = 23;
 let maxy = 9;
 let tileSize = 50;
-let colors = ["#813c3c78", "#aa6666"];
+let colors = ["#813c3c78", "#aa6666", "#f8831d"];
 
 let playerA = {
-  x: 19,
+  x: 23,
   y: 9,
   width: 50,
   height: 50
@@ -36,14 +36,17 @@ let fire_shooty_map = [
 
 
 function drawMap(gameMap, fireRow, fireColumn) {
+  let cols = 24;
+  let rows = 10;
+  let size = 50;
 
   let index = 0;
 
-  for (let y = 0; y < 10; y++) {
+  for (let y = 0; y < rows; y++) {
     
-    for (let x = 0; x < 24; x++) {
+    for (let x = 0; x < cols; x++) {
       if((x === fireColumn || y === fireRow)){
-        ctx.fillStyle = "#ff9500";
+        ctx.fillStyle = colors[2];
       if(x === playerA.x && y === playerA.y){
         alert("playerA is dead");
       }
@@ -53,7 +56,7 @@ function drawMap(gameMap, fireRow, fireColumn) {
       } else {
         ctx.fillStyle = colors[gameMap[index]];
       }
-      ctx.fillRect(x * 50, y * 50, 50, 50);
+      ctx.fillRect(x * size, y * size, size, size);
       index++;
     }
   }
@@ -148,4 +151,3 @@ function gameLoop() {
 }
 
 gameLoop();
-
