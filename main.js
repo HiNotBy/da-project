@@ -1,20 +1,24 @@
-let maxx = 23;
-let maxy = 9;
+let current_game = "fire_game";
+let maxx = 22;
+let maxy = 8;
 let tileSize = 50;
-let colors = ["#813c3c78", "#aa6666", "#f8831d"];
+let colors = ["#501f1f78", "#aa6666", "#ff7700", "#4f4f4f", "#ff0000",
+"#0000ff", "#00ff00", "#180000", "#007700","#00eaff", "#c7b550"];
 
 let playerA = {
-  x: 23,
-  y: 9,
+  x: 22,
+  y: 8,
   width: 50,
-  height: 50
+  height: 50,
+  status: "alive"
 };
 
 let playerB = {
-  x: 0,
-  y: 0,
+  x: 1,
+  y: 1,
   width: 50,
-  height: 50
+  height: 50,
+  status: "alive"
 };
 
 const canvas = document.getElementById("turtle");
@@ -22,18 +26,30 @@ const ctx = canvas.getContext("2d");
 
 
 let fire_shooty_map = [
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,
-  1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1
+  3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+  3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+  3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+  3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+  3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+  3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+  3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+  3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+  3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+  3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 ];
 
+let islands_map = [
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,10,10,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,10,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,8,8,8,9,9,9,9,9,
+  9,9,9,9,10,8,8,8,10,9,9,9,9,9,9,8,8,8,8,8,9,9,9,9,
+  9,9,9,9,9,10,10,10,9,9,9,9,9,9,9,8,8,8,8,8,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,8,8,8,8,8,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,8,8,8,9,9,9,9,9,
+];
 
 function drawMap(gameMap, fireRow, fireColumn) {
   let cols = 24;
@@ -43,21 +59,27 @@ function drawMap(gameMap, fireRow, fireColumn) {
   let index = 0;
 
   for (let y = 0; y < rows; y++) {
-    
     for (let x = 0; x < cols; x++) {
-      if((x === fireColumn || y === fireRow)){
-        ctx.fillStyle = colors[2];
-      if(x === playerA.x && y === playerA.y){
-        alert("playerA is dead");
-      }
-      if(x === playerB.x && y === playerB.y){
-        alert("playerB is dead");
-      }
-      } else {
+      if(gameMap === fire_shooty_map){
+        if((x === fireColumn || y === fireRow) && !warning){
+          ctx.fillStyle = colors[4];
+        if(x === playerA.x && y === playerA.y){
+          playerA.status = "toasted";
+        }
+        if(x === playerB.x && y === playerB.y){
+          playerB.status = "toasted";
+        }
+        } else if(warning && (x === fireColumn || y === fireRow) && (gameMap[index] === 3)){
+          ctx.fillStyle = colors[2];
+        } else {
+          ctx.fillStyle = colors[gameMap[index]];
+        }
+      } else if(gameMap === islands_map){
         ctx.fillStyle = colors[gameMap[index]];
       }
       ctx.fillRect(x * size, y * size, size, size);
       index++;
+      
     }
   }
 }
@@ -91,9 +113,10 @@ window.addEventListener("keydown", function(event) {
   }
 
   if (
-    newX >= 0 && newX <= maxx &&
-    newY >= 0 && newY <= maxy &&
-    !playerCollision(newX, newY, playerB)
+    newX >= 1 && newX <= maxx &&
+    newY >= 1 && newY <= maxy &&
+    !playerCollision(newX, newY, playerB) &&
+    playerA.status != "toasted"
   ) {
     playerA.x = newX;
     playerA.y = newY;
@@ -117,9 +140,10 @@ window.addEventListener("keydown", function(event) {
   }
 
   if (
-    newX >= 0 && newX <= maxx &&
-    newY >= 0 && newY <= maxy &&
-    !playerCollision(newX, newY, playerA)
+    newX >= 1 && newX <= maxx &&
+    newY >= 1 && newY <= maxy &&
+    !playerCollision(newX, newY, playerA) &&
+    playerB.status != "toasted"
   ) {
     playerB.x = newX;
     playerB.y = newY;
@@ -127,24 +151,53 @@ window.addEventListener("keydown", function(event) {
 });
 
 let fireIndex = 0
+let warning = false;
+const delay = 20;
+let fireRow = (Math.floor(Math.random()*8)+1);
+let fireColumn = (Math.floor(Math.random()*22)+1);
 
-const delay = 300;
 function gameLoop() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if(fireIndex > delay){
-    if(fireIndex > delay + 10){
-      fireIndex = 0;
+
+  if(current_game === "fire_game"){
+    if(fireIndex > delay){
+      console.log(fireRow);
+      console.log(fireColumn);
+      if(fireIndex < delay + 30){
+        warning = true;
+        drawMap(fire_shooty_map, fireColumn, fireRow);
+      } else{
+        warning = false;
+        drawMap(fire_shooty_map, fireColumn, fireRow);
+      }
+      if(fireIndex > delay + 50){
+        fireIndex = 0;
+        warning = false;
+        fireRow = (Math.floor(Math.random()*22)+1);
+        fireColumn = (Math.floor(Math.random()*8)+1);
+      }
+      } else {
+      drawMap(fire_shooty_map);
     }
-    drawMap(fire_shooty_map, 6, 7);
-  } else {
-    drawMap(fire_shooty_map);
+      fireIndex ++;
+  } else if(current_game === "islands_game"){
+    drawMap(islands_map);
   }
-    fireIndex ++;
-  ctx.fillStyle = "red";
+
+
+  if(playerA.status === "toasted"){
+    ctx.fillStyle = colors[7];
+  } else{
+    ctx.fillStyle = colors[6];
+  }
   ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
 
-  ctx.fillStyle = "blue";
+  if(playerB.status === "toasted"){
+    ctx.fillStyle = colors[7];
+  } else{
+    ctx.fillStyle = colors[5];
+  }
   ctx.fillRect(playerB.x * 50, playerB.y * 50, playerB.width, playerB.height);
 
   requestAnimationFrame(gameLoop);
