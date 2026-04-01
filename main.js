@@ -152,7 +152,7 @@ window.addEventListener("keydown", function(event) {
 
 let fireIndex = 0
 let warning = false;
-const delay = 20;
+const delay = 50;
 let fireRow = (Math.floor(Math.random()*8)+1);
 let fireColumn = (Math.floor(Math.random()*22)+1);
 
