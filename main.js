@@ -5,6 +5,9 @@ let tileSize = 50;
 let colors = ["#501f1f78", "#aa6666", "#ff7700", "#4f4f4f", "#ff0000",
 "#0000ff", "#00ff00", "#180000", "#007700","#00eaff", "#c7b550"];
 
+const deadPlayerB = new Image();
+deadPlayerB.src = "deadPlayerB.jpg";
+
 let playerA = {
   x: 22,
   y: 8,
@@ -20,6 +23,7 @@ let playerB = {
   height: 50,
   status: "alive"
 };
+
 
 const canvas = document.getElementById("turtle");
 const ctx = canvas.getContext("2d");
@@ -138,6 +142,9 @@ window.addEventListener("keydown", function(event) {
   if (event.key === "d") {
     newX++;
   }
+  if (event.key === "r"){
+    startFire();
+  }
 
   if (
     newX >= 1 && newX <= maxx &&
@@ -187,20 +194,22 @@ function gameLoop() {
 
 
   if(playerA.status === "toasted"){
-    ctx.fillStyle = colors[7];
+       ctx.drawImage(deadPlayerB, playerA.x * 50 , playerA.y * 50, 50, 50)
   } else{
     ctx.fillStyle = colors[6];
   }
   ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
 
   if(playerB.status === "toasted"){
-    ctx.fillStyle = colors[7];
+ 
   } else{
     ctx.fillStyle = colors[5];
+    ctx.fillRect(playerB.x * 50, playerB.y * 50, playerB.width, playerB.height);
   }
-  ctx.fillRect(playerB.x * 50, playerB.y * 50, playerB.width, playerB.height);
+
 
   requestAnimationFrame(gameLoop);
 }
-
 gameLoop();
+
+
