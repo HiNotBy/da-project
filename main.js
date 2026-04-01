@@ -162,7 +162,7 @@ window.addEventListener("keydown", function(event) {
 
 let fireIndex = 0
 let warning = false;
-const delay = 50;
+const delay = 25;
 let fireRow = (Math.floor(Math.random()*8)+1);
 let fireColumn = (Math.floor(Math.random()*22)+1);
 
@@ -181,7 +181,7 @@ function gameLoop() {
         warning = false;
         drawMap(fire_shooty_map, fireColumn, fireRow);
       }
-      if(fireIndex > delay + 50){
+      if(fireIndex > delay + 40){
         fireIndex = 0;
         warning = false;
         fireRow = (Math.floor(Math.random()*22)+1);
