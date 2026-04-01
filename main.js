@@ -5,6 +5,9 @@ let tileSize = 50;
 let colors = ["#501f1f78", "#aa6666", "#ff7700", "#4f4f4f", "#ff0000",
 "#0000ff", "#00ff00", "#180000", "#007700","#00eaff", "#c7b550"];
 
+const deadPlayerA = new Image();
+deadPlayerA.src = "deadPlayerA.jpg";
+
 const deadPlayerB = new Image();
 deadPlayerB.src = "deadPlayerB.jpg";
 
@@ -194,14 +197,15 @@ function gameLoop() {
 
 
   if(playerA.status === "toasted"){
-       ctx.drawImage(deadPlayerB, playerA.x * 50 , playerA.y * 50, 50, 50)
+       ctx.drawImage(deadPlayerA, playerA.x * 50 , playerA.y * 50, 50, 50)
   } else{
     ctx.fillStyle = colors[6];
+      ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
   }
-  ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
+
 
   if(playerB.status === "toasted"){
- 
+    ctx.drawImage(deadPlayerB, playerB.x * 50 , playerB.y * 50, 50, 50)
   } else{
     ctx.fillStyle = colors[5];
     ctx.fillRect(playerB.x * 50, playerB.y * 50, playerB.width, playerB.height);
