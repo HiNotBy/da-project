@@ -12,7 +12,8 @@ const deadPlayerA = new Image();
 deadPlayerA.src = "deadPlayerA.jpg";
 
 const deadPlayerB = new Image();
-deadPlayerB.src = "deadPlayerB.jpg";
+deadPlayerB.src = "purple skeleton disintegrating.webp";
+
 
 let playerA = {
   x: 22,
@@ -53,7 +54,7 @@ let islands_map = [
   9,9,9,9,9,10,10,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
   9,9,9,9,10,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
   9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-  9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,10,8,8,7,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
   9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,8,8,8,9,9,9,9,9,
   9,9,9,9,10,8,8,8,10,9,9,9,9,9,9,8,8,8,8,8,9,9,9,9,
   9,9,9,9,9,10,10,10,9,9,9,9,9,9,9,8,8,8,8,8,9,9,9,9,
@@ -161,6 +162,11 @@ window.addEventListener("keydown", function(event) {
     playerB.x = newX;
     playerB.y = newY;
   }
+
+  if ((event.key === "Enter") && (playerA.status === "toasted" || playerB.status === "toasted")){
+    playerA.status = "alive";
+    playerB.status = "alive";
+  }
 });
 
 let fireIndex = 0
@@ -184,7 +190,7 @@ function gameLoop() {
         warning = false;
         drawMap(fire_shooty_map, fireColumn, fireRow);
       }
-      if(fireIndex > delay + 40z ){
+      if(fireIndex > delay + 40 ){
         fireIndex = 0;
         warning = false;
         fireRow = (Math.floor(Math.random()*22)+1);
