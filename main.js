@@ -7,12 +7,13 @@ let maxy = 8;
 let tileSize = 50;
 let colors = ["#501f1f78", "#aa6666", "#ff7700", "#4f4f4f", "#ff0000",
 "#0000ff", "#00ff00", "#180000", "#007700","#00eaff", "#c7b550"];
+let deathImages = ["deadPlayerA.jpg", "deadPlayerB.jpg","purple skeleton disintegrating.webp", "desintegrated squirrel.webp"];
 
 const deadPlayerA = new Image();
-deadPlayerA.src = "deadPlayerA.jpg";
+deadPlayerA.src = deathImages[0];
 
 const deadPlayerB = new Image();
-deadPlayerB.src = "purple skeleton disintegrating.webp";
+deadPlayerB.src = deathImages[3];
 
 
 let playerA = {
