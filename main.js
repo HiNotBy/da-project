@@ -1,3 +1,6 @@
+//This was made by Henry Berard (Ferits) 
+//and Gabriel Zarate (HiNotBy)
+
 let current_game = "fire_game";
 let maxx = 22;
 let maxy = 8;
