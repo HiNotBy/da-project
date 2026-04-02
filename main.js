@@ -181,7 +181,7 @@ function gameLoop() {
         warning = false;
         drawMap(fire_shooty_map, fireColumn, fireRow);
       }
-      if(fireIndex > delay + 40){
+      if(fireIndex > delay + 40z ){
         fireIndex = 0;
         warning = false;
         fireRow = (Math.floor(Math.random()*22)+1);
