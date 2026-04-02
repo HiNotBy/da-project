@@ -1,15 +1,20 @@
+//This was made by Henry Berard (Ferits) 
+//and Gabriel Zarate (HiNotBy)
+
 let current_game = "fire_game";
 let maxx = 22;
 let maxy = 8;
 let tileSize = 50;
 let colors = ["#501f1f78", "#aa6666", "#ff7700", "#4f4f4f", "#ff0000",
 "#0000ff", "#00ff00", "#180000", "#007700","#00eaff", "#c7b550"];
+let deathImages = ["deadPlayerA.jpg", "deadPlayerB.jpg","purple skeleton disintegrating.webp", "desintegrated squirrel.webp"];
 
 const deadPlayerA = new Image();
-deadPlayerA.src = "deadPlayerA.jpg";
+deadPlayerA.src = deathImages[0];
 
 const deadPlayerB = new Image();
-deadPlayerB.src = "deadPlayerB.jpg";
+deadPlayerB.src = deathImages[3];
+
 
 let playerA = {
   x: 22,
@@ -50,7 +55,7 @@ let islands_map = [
   9,9,9,9,9,10,10,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
   9,9,9,9,10,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
   9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-  9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,10,8,8,7,8,8,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
   9,9,9,10,8,8,8,8,8,10,9,9,9,9,9,9,8,8,8,9,9,9,9,9,
   9,9,9,9,10,8,8,8,10,9,9,9,9,9,9,8,8,8,8,8,9,9,9,9,
   9,9,9,9,9,10,10,10,9,9,9,9,9,9,9,8,8,8,8,8,9,9,9,9,
@@ -158,11 +163,16 @@ window.addEventListener("keydown", function(event) {
     playerB.x = newX;
     playerB.y = newY;
   }
+
+  if ((event.key === "Enter") && (playerA.status === "toasted" || playerB.status === "toasted")){
+    playerA.status = "alive";
+    playerB.status = "alive";
+  }
 });
 
 let fireIndex = 0
 let warning = false;
-const delay = 50;
+const delay = 25;
 let fireRow = (Math.floor(Math.random()*8)+1);
 let fireColumn = (Math.floor(Math.random()*22)+1);
 
@@ -181,7 +191,7 @@ function gameLoop() {
         warning = false;
         drawMap(fire_shooty_map, fireColumn, fireRow);
       }
-      if(fireIndex > delay + 50){
+      if(fireIndex > delay + 40 ){
         fireIndex = 0;
         warning = false;
         fireRow = (Math.floor(Math.random()*22)+1);
