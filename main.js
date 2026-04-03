@@ -1,5 +1,4 @@
-//This was made by Henry Berard (Ferits) 
-//and Gabriel Zarate (HiNotBy)
+//This was made in collaboration between two gay people
 
 let current_game = "fire_game";
 let maxx = 22;
@@ -106,10 +105,12 @@ function playerCollision(newx, newy, other) {
 }
 
 
+let newX;
+let newY;
 window.addEventListener("keydown", function(event) {
 
-  let newX = playerA.x;
-  let newY = playerA.y;
+  newX = playerA.x;
+  newY = playerA.y;
 
   if (event.key === "ArrowUp"){ 
     newY--;
