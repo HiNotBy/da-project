@@ -1,6 +1,7 @@
 //This was made in collaboration between two gay people
 
-let current_game = "lawn_game";
+let current_game = "fire_game";
+const title = document.getElementById("title");
 
 let maxx = 22;
 let maxy = 8;
@@ -183,6 +184,12 @@ let fireRow = (Math.floor(Math.random()*8)+1);
 let fireColumn = (Math.floor(Math.random()*22)+1);
 
 function gameLoop() {
+
+  if(current_game === "fire_game"){
+    title.textContent = "🔥Fire shooty thingy of death🔥";
+  } else {
+    title.textContent = "epstein island";
+  }
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
