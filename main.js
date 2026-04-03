@@ -1,9 +1,13 @@
 //This was made in collaboration between two gay people
 
-let current_game = "lawn_game";
+let current_game = "fire_game";
+
 let maxx = 22;
 let maxy = 8;
+let minx = 1;
+let miny = 1;
 let tileSize = 50;
+
 let colors = ["#410000", "#571700", "#ff7700", "#4f4f4f", "#ff0000",
 "#0000ff", "#00ff00", "#180000", "#007700","#00eaff", "#c7b550"];
 
@@ -125,8 +129,8 @@ window.addEventListener("keydown", function(event) {
   }
 
   if (
-    newX >= 1 && newX <= maxx &&
-    newY >= 1 && newY <= maxy &&
+    newX >= minx && newX <= maxx &&
+    newY >= miny && newY <= maxy &&
     !playerCollision(newX, newY, playerB) &&
     playerA.status != "toasted"
   ) {
@@ -155,8 +159,8 @@ window.addEventListener("keydown", function(event) {
   }
 
   if (
-    newX >= 1 && newX <= maxx &&
-    newY >= 1 && newY <= maxy &&
+    newX >= minx && newX <= maxx &&
+    newY >= miny && newY <= maxy &&
     !playerCollision(newX, newY, playerA) &&
     playerB.status != "toasted"
   ) {
@@ -181,6 +185,12 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if(current_game === "fire_game"){
+
+    maxx = 22;
+    maxy = 8;
+    minx = 1;
+    miny = 1;
+
     if(fireIndex > delay){
       console.log(fireRow);
       console.log(fireColumn);
@@ -202,6 +212,12 @@ function gameLoop() {
     }
       fireIndex ++;
   } else if(current_game === "lawn_game"){
+    
+    maxx = 23;
+    maxy = 9;
+    minx = 0;
+    miny = 0;
+
     drawMap(lawn_map);
   }
 
