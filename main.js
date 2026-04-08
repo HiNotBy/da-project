@@ -1,15 +1,15 @@
 //This was made in collaboration between two gay people
 
-let current_game = "lawn_game";
+let current_game = "main_menu";
 
 let maxx = 22;
-let maxy = 8;
+let maxy = 8; 
 let minx = 1;
 let miny = 1;
 let tileSize = 50;
 
-let colors = ["#410000", "#571700", "#ff7700", "#4f4f4f", "#ff0000",
-"#0000ff", "#00ff00", "#180000", "#007700","#00eaff", "#c7b550"];
+let colors = ["#410000", "#571700", "#ff7700", "#343434", "#ff0000",
+"#0000ff", "#00ff00", "#ff0000", "#ffffff","#53c783",];
 
 const deadPlayerA = new Image();
 deadPlayerA.src = "Toasted Image.png";
@@ -54,17 +54,17 @@ let fire_shooty_map = [
   3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
 ];
 
-let lawn_map = [
-  0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-  0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-  0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-  0,0,0,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-  8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-  8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
-  8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0,0,0,
-  8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
-  8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
-  8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+let main_menu_map = [
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+  9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
 ];
 
 function drawMap(gameMap, fireRow, fireColumn) {
@@ -90,7 +90,7 @@ function drawMap(gameMap, fireRow, fireColumn) {
         } else {
           ctx.fillStyle = colors[gameMap[index]];
         }
-      } else if(gameMap === lawn_map){
+      } else if(gameMap === main_menu_map){
         ctx.fillStyle = colors[gameMap[index]];
       }
       ctx.fillRect(x * size, y * size, size, size);
@@ -170,10 +170,35 @@ window.addEventListener("keydown", function(event) {
     playerB.y = newY;
   }
 
-  if ((event.key === "Enter") && (playerA.status === "toasted" || playerB.status === "toasted")){
+  if ((event.key === " ") && (playerA.status === "toasted" || playerB.status === "toasted")){
     playerA.status = "alive";
     playerB.status = "alive";
   }
+
+  if (event.key === "Enter"){
+    if(current_game === "main_menu"){
+
+      current_game = "fire_game";
+      playerA.x = 22;
+      playerA.y = 8;
+      playerB.x = 1;
+      playerB.y = 1;
+
+    } else if(current_game === "fire_game"){
+
+      current_game = "main_menu";
+      playerA.x = 23;
+      playerA.y = 9;
+      playerB.x = 0;
+      playerB.y = 0;
+
+      playerA.status = "alive";
+      playerB.status = "alive";
+
+
+    }
+  }
+
 });
 
 let fireIndex = 0
@@ -213,14 +238,14 @@ function gameLoop() {
       drawMap(fire_shooty_map);
     }
       fireIndex ++;
-  } else if(current_game === "lawn_game"){
+  } else if(current_game === "main_menu"){
     
     maxx = 23;
     maxy = 9;
     minx = 0;
     miny = 0;
 
-    drawMap(lawn_map);
+    drawMap(main_menu_map);
   }
 
 
