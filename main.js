@@ -19,8 +19,8 @@ deadPlayerB.src = "Toasted Image.png";
 
 
 let playerA = {
-  x: 23,
-  y: 9,
+  x: 18,
+  y: 1,
   width: 50,
   height: 50,
   score: 0,
@@ -28,8 +28,8 @@ let playerA = {
 };
 
 let playerB = {
-  x: 0,
-  y: 0,
+  x: 5,
+  y: 1,
   width: 50,
   height: 50,
   score: 0,
@@ -39,7 +39,7 @@ let playerB = {
 
 const canvas = document.getElementById("turtle");
 const ctx = canvas.getContext("2d");
-
+const text = document.getElementById("text");
 
 let fire_shooty_map = [
   3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
@@ -171,32 +171,21 @@ window.addEventListener("keydown", function(event) {
   }
 
   if ((event.key === " ") && (playerA.status === "toasted" || playerB.status === "toasted")){
+
+    current_game = "main_menu";
+    maxx = 23;
+    maxy = 9;
+    minx = 0;
+    miny = 0;
+
+    playerA.x = 18;
+    playerA.y = 1;
+    playerB.x = 5;
+    playerB.y = 1;
+
     playerA.status = "alive";
     playerB.status = "alive";
-  }
 
-  if (event.key === "Enter"){
-    if(current_game === "main_menu"){
-
-      current_game = "fire_game";
-      playerA.x = 22;
-      playerA.y = 8;
-      playerB.x = 1;
-      playerB.y = 1;
-
-    } else if(current_game === "fire_game"){
-
-      current_game = "main_menu";
-      playerA.x = 23;
-      playerA.y = 9;
-      playerB.x = 0;
-      playerB.y = 0;
-
-      playerA.status = "alive";
-      playerB.status = "alive";
-
-
-    }
   }
 
 });
@@ -212,6 +201,8 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if(current_game === "fire_game"){
+
+    text.textContent = "🔥Fire shooty thingy of death🔥";
 
     maxx = 22;
     maxy = 8;
@@ -240,6 +231,8 @@ function gameLoop() {
       fireIndex ++;
   } else if(current_game === "main_menu"){
     
+    text.textContent = "Both players must be on the white platforms to start the game!";
+
     maxx = 23;
     maxy = 9;
     minx = 0;
@@ -249,15 +242,21 @@ function gameLoop() {
 
     if((playerB.x === 5 && playerB.y === 5 && playerA.x === 18 && playerA.y === 5)
       ||(playerA.x === 5 && playerA.y === 5 && playerB.x === 18 && playerB.y === 5)){
+
+      fireIndex = 0;
       current_game = "fire_game";
       playerA.x = 22;
       playerA.y = 8;
       playerB.x = 1;
       playerB.y = 1;
+
     }
 
   }
 
+  if (playerA.status === "toasted" || playerB.status === "toasted"){
+    text.textContent = "Press space to go back to the main screen!";
+  }
 
   if(playerA.status === "toasted"){
        ctx.drawImage(deadPlayerA, playerA.x * 50 , playerA.y * 50, 50, 50)
