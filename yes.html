@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foxes</title>
+    <style>
+        #canvas {
+            display: flex;
+            justify-content: center;
+        }
+        h1{
+            text-align: center;
+            font-size:  30px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1 id = "text">🔥Fire shooty thingy of death🔥</h1>
+    <div id = "canvas">
+        <canvas width = "1200" height = "500" id = "turtle"></canvas>
+    </div>
+    <script>
+        //This was made in collaboration
+
+        let current_game = "main_menu";
+
+        let maxx = 22;
+        let maxy = 8; 
+        let minx = 1;
+        let miny = 1;
+        let tileSize = 50;
+
+        let colors = ["#410000", "#571700", "#ff7700", "#343434", "#ff0000",
+        "#0000ff", "#00ff00", "#ff0000", "#ffffff","#308f57",];
+
+        const deadPlayerA = new Image();
+        deadPlayerA.src = "Toasted Image.png";
+
+        const deadPlayerB = new Image();
+        deadPlayerB.src = "Toasted Image.png";
+
+
+        let playerA = {
+        x: 18,
+        y: 1,
+        width: 50,
+        height: 50,
+        score: 0,
+        status: "alive"
+        };
+
+        let playerB = {
+        x: 5,
+        y: 1,
+        width: 50,
+        height: 50,
+        score: 0,
+        status: "alive"
+        };
+
+
+        const canvas = document.getElementById("turtle");
+        const ctx = canvas.getContext("2d");
+        const text = document.getElementById("text");
+
+        let fire_shooty_map = [
+        3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+        3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+        3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+        3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+        3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+        3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+        3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+        3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,3,
+        3,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,3,
+        3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+        ];
+
+        let main_menu_map = [
+        9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+        9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+        9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+        9,9,9,3,3,3,3,3,9,9,9,9,9,9,9,9,3,3,3,3,3,9,9,9,
+        9,9,9,3,3,3,3,3,9,9,9,9,9,9,9,9,3,3,3,3,3,9,9,9,
+        9,9,9,3,3,8,3,3,9,9,9,9,9,9,9,9,3,3,8,3,3,9,9,9,
+        9,9,9,3,3,3,3,3,9,9,9,9,9,9,9,9,3,3,3,3,3,9,9,9,
+        9,9,9,3,3,3,3,3,9,9,9,9,9,9,9,9,3,3,3,3,3,9,9,9,
+        9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+        9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+        ];
+
+        function drawMap(gameMap, fireRow, fireColumn) {
+        let cols = 24;
+        let rows = 10;
+        let size = 50;
+
+        let index = 0;
+
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+            if(gameMap === fire_shooty_map){
+                if((x === fireColumn || y === fireRow) && !warning){
+                ctx.fillStyle = colors[4];
+                if(x === playerA.x && y === playerA.y){
+                playerA.status = "toasted";
+                }
+                if(x === playerB.x && y === playerB.y){
+                playerB.status = "toasted";
+                }
+                } else if(warning && (x === fireColumn || y === fireRow) && (gameMap[index] === 3)){
+                ctx.fillStyle = colors[2];
+                } else {
+                ctx.fillStyle = colors[gameMap[index]];
+                }
+            } else if(gameMap === main_menu_map){
+                ctx.fillStyle = colors[gameMap[index]];
+            }
+            ctx.fillRect(x * size, y * size, size, size);
+            index++;
+            
+            }
+        }
+        }
+
+
+        function playerCollision(newx, newy, other) {
+        if(newx === other.x && newy === other.y){
+            return true;
+        } else {
+            return false;
+        }
+        }
+
+
+        let newX;
+        let newY;
+        window.addEventListener("keydown", function(event) {
+
+        newX = playerA.x;
+        newY = playerA.y;
+
+        if (event.key === "ArrowUp"){ 
+            newY--;
+        }
+        if (event.key === "ArrowDown") {
+            newY++;
+        }
+        if (event.key === "ArrowLeft") {
+            newX--;
+        }
+        if (event.key === "ArrowRight") {
+            newX++;
+        }
+
+        if (
+            newX >= minx && newX <= maxx &&
+            newY >= miny && newY <= maxy &&
+            !playerCollision(newX, newY, playerB) &&
+            playerA.status != "toasted"
+        ) {
+            playerA.x = newX;
+            playerA.y = newY;
+        }
+
+
+        newX = playerB.x;
+        newY = playerB.y;
+
+        if (event.key === "w") { 
+            newY--;
+        }
+        if (event.key === "s") { 
+            newY++;
+        }
+        if (event.key === "a") {
+            newX--;
+        }
+        if (event.key === "d") {
+            newX++;
+        }
+        if (event.key === "r"){
+            startFire();
+        }
+
+        if (
+            newX >= minx && newX <= maxx &&
+            newY >= miny && newY <= maxy &&
+            !playerCollision(newX, newY, playerA) &&
+            playerB.status != "toasted"
+        ) {
+            playerB.x = newX;
+            playerB.y = newY;
+        }
+
+        if ((event.key === " ") && (playerA.status === "toasted" || playerB.status === "toasted")){
+
+            current_game = "main_menu";
+            maxx = 23;
+            maxy = 9;
+            minx = 0;
+            miny = 0;
+
+            playerA.x = 18;
+            playerA.y = 1;
+            playerB.x = 5;
+            playerB.y = 1;
+
+            playerA.status = "alive";
+            playerB.status = "alive";
+
+        }
+
+        });
+
+        let fireIndex = 0
+        let warning = false;
+        const delay = 25;
+        let fireRow = (Math.floor(Math.random()*8)+1);
+        let fireColumn = (Math.floor(Math.random()*22)+1);
+
+        function gameLoop() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if(current_game === "fire_game"){
+
+            text.textContent = "🔥Fire shooty thingy of death🔥";
+
+            maxx = 22;
+            maxy = 8;
+            minx = 1;
+            miny = 1;
+
+            if(fireIndex > delay){
+            console.log(fireRow);
+            console.log(fireColumn);
+            if(fireIndex < delay + 30){
+                warning = true;
+                drawMap(fire_shooty_map, fireColumn, fireRow);
+            } else{
+                warning = false;
+                drawMap(fire_shooty_map, fireColumn, fireRow);
+            }
+            if(fireIndex > delay + 40 ){
+                fireIndex = 0;
+                warning = false;
+                fireRow = (Math.floor(Math.random()*22)+1);
+                fireColumn = (Math.floor(Math.random()*8)+1);
+            }
+            } else {
+            drawMap(fire_shooty_map);
+            }
+            fireIndex ++;
+        } else if(current_game === "main_menu"){
+            
+            text.textContent = "Both players must be on the white platforms to start the game!";
+
+            maxx = 23;
+            maxy = 9;
+            minx = 0;
+            miny = 0;
+
+            drawMap(main_menu_map);
+
+            if((playerB.x === 5 && playerB.y === 5 && playerA.x === 18 && playerA.y === 5)
+            ||(playerA.x === 5 && playerA.y === 5 && playerB.x === 18 && playerB.y === 5)){
+
+            fireIndex = 0;
+            current_game = "fire_game";
+            playerA.x = 22;
+            playerA.y = 8;
+            playerB.x = 1;
+            playerB.y = 1;
+
+            }
+
+        }
+
+        if (playerA.status === "toasted" || playerB.status === "toasted"){
+            text.textContent = "Press space to go back to the main screen!";
+        }
+
+        if(playerA.status === "toasted"){
+            ctx.drawImage(deadPlayerA, playerA.x * 50 , playerA.y * 50, 50, 50)
+        } else{
+            ctx.fillStyle = colors[6];
+            ctx.fillRect(playerA.x * 50, playerA.y * 50, playerA.width, playerA.height);
+        }
+
+
+        if(playerB.status === "toasted"){
+            ctx.drawImage(deadPlayerB, playerB.x * 50 , playerB.y * 50, 50, 50)
+        } else{
+            ctx.fillStyle = colors[5];
+            ctx.fillRect(playerB.x * 50, playerB.y * 50, playerB.width, playerB.height);
+        }
+
+
+        requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
+    </script>
+</body>
+</html>

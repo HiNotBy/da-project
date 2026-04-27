@@ -1,4 +1,4 @@
-//This was made in collaboration between two gay people
+//This was made in collaboration
 
 let current_game = "main_menu";
 
