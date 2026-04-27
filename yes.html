@@ -109,13 +109,13 @@
                 if(x === playerB.x && y === playerB.y){
                 playerB.status = "toasted";
                 }
-                } else if(warning && (x === fireColumn || y === fireRow) && (gameMap[index] === 3)){
+                } else if(warning && (x === fireColumn || y === fireRow) && (fire_shooty_map[index] === 3)){
                 ctx.fillStyle = colors[2];
                 } else {
-                ctx.fillStyle = colors[gameMap[index]];
+                ctx.fillStyle = colors[fire_shooty_map[index]];
                 }
             } else if(gameMap === main_menu_map){
-                ctx.fillStyle = colors[gameMap[index]];
+                ctx.fillStyle = colors[main_menu_map[index]];
             }
             ctx.fillRect(x * size, y * size, size, size);
             index++;
